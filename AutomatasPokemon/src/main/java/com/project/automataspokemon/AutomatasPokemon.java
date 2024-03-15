@@ -7,7 +7,7 @@ package com.project.automataspokemon;
 
 /**
  *
- * @author CamiloWG
+ * @author Camilo & Paula
  */
 public class AutomatasPokemon {
 
