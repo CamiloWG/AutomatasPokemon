@@ -12,6 +12,7 @@ package com.project.automataspokemon;
 public class AutomatasPokemon {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+        Manager program = new Manager();
+        program.crearPokemon();
     }
 }
