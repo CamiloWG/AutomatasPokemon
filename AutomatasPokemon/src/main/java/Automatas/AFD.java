@@ -48,6 +48,11 @@ public class AFD {
        }
    }
    
+   
+   
+   public void crearEnlaceConsola() {
+       
+   }
     
     
 }

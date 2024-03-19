@@ -19,7 +19,7 @@ public class Manager {
         Scanner scanner = new Scanner(System.in);
         if(welcome) {
             System.out.println("Bienvenido al creador de autómatas Pokemon:");
-            System.out.println("Para empezar, elija el tipo de autómata: \n1. Finito Determinista \n2. Finito no determinista \n3. Lambda");
+            System.out.println("Para empezar, elija el tipo de autómata: \n1. Finito Determinista \n2. Finito no determinista \n3. Lambda\n4. Salir");
         }
         try {
             int tipo = scanner.nextInt();
@@ -34,6 +34,10 @@ public class Manager {
                 }
                 case 3: {
                     menuLambda();
+                    break;
+                }
+                case 4: {
+                    System.out.println("Ejecución finalizada!");
                     break;
                 }
                 default: {
@@ -65,11 +69,23 @@ public class Manager {
             int tipo = scanner.nextInt();
             switch(tipo) {
                 case 1: {
-                    
+                    if(this.automataAFD != null) {
+                        this.automataAFD = new AFD();
+                        System.out.println("Creado Automata Finito Determinista con el estado inicial Q0");
+                    } else {
+                        System.out.println("Ya hay un automata creado, ¿deseas crear uno nuevo?");
+                        System.out.println("ADVERTENCIA: Se eliminará el autómata anterior");
+                        System.out.println("Y = Crear uno nuevo | Cualquier otro caracter para cancelar");
+                        String keyboard = scanner.next();
+                        if(keyboard == "Y") {
+                            this.automataAFD = new AFD();
+                            System.out.println("Creado Automata Finito Determinista con el estado inicial Q0");
+                        } else System.out.println("Cancelado!\n\n\n");
+                    }
                     break;
                 }
                 case 2: {
-                    
+                    int opcion = menuEdicion();
                     break;
                 }
                 case 3: {
@@ -105,6 +121,22 @@ public class Manager {
     
     private void menuLambda() {
         
+    }
+    
+    private int menuEdicion() {
+        Scanner scan = new Scanner(System.in);
+        System.out.println("-----------------");
+        System.out.println("1. Crear enlace");
+        System.out.println("2. Eliminar enlace");
+        System.out.println("3. Volver");
+        System.out.println("-----------------");
+        try {
+            int opc = scan.nextInt();
+            if(opc == 1 || opc == 2 || opc == 3) return opc;
+        } catch(Exception ex) {
+            System.out.println("\nIngrese una opción valida!\n\n");
+        }
+        return menuEdicion();
     }
     
     
