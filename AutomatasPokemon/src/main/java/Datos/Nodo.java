@@ -25,11 +25,15 @@ public class Nodo {
         this.enlaces.add(enlace);
     }
     
-    public void eliminarEnlace(Conexion enlace) {
-        this.enlaces.remove(enlace);
+    public boolean eliminarEnlace(Conexion enlace) {
+        return this.enlaces.remove(enlace);
     }
     
     public boolean esAceptacion() {
         return this.aceptacion;
+    }
+    
+    public void cambiarAceptacion() {
+        this.aceptacion = !this.aceptacion;
     }
 }

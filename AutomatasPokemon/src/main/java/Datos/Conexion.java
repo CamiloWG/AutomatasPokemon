@@ -11,4 +11,10 @@ package Datos;
 public class Conexion {
     public String key;
     public int To;
+    
+    
+    public Conexion(String key, int to) {
+        this.To = to;
+        this.key = key;
+    }
 }

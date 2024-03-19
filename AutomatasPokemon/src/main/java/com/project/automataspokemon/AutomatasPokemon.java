@@ -13,6 +13,6 @@ public class AutomatasPokemon {
 
     public static void main(String[] args) {
         Manager program = new Manager();
-        program.crearPokemon();
+        program.crearPokemon(true);
     }
 }

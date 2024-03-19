@@ -21,8 +21,10 @@ public class NodoList {
         this.Nodos = new ArrayList<Nodo>();        
     }
     
-    public void addNodo(Nodo nodo) {
-        this.Nodos.add(nodo);
+    public void addNodo(boolean aceptacion) {
+        Nodo nuevoNodo = new Nodo(currentId, aceptacion);
+        this.Nodos.add(nuevoNodo);
+        this.currentId++;
     }
     
     public boolean deleteNodo(int id) {
