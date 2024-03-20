@@ -41,18 +41,16 @@ public class Manager {
                     break;
                 }
                 case 4: {
-                    System.out.println("Ejecución finalizada!");
+                    boxMessage("Ejecución finalizada!");
                     break;
                 }
                 default: {
-                    System.out.println("Por favor eliga una opción válida!");
-                    System.out.println("----------------------------------\n\n\n");
+                    boxMessage("Por favor elija una opción válida!");
                     crearPokemon(false);
                 }
             }
         } catch(Exception e) {
-            System.out.println("Por favor eliga una opción válida!");
-            System.out.println("----------------------------------\n\n\n");
+            boxMessage("Por favor elija una opción válida!");
             crearPokemon(false);
         }
         
@@ -84,18 +82,17 @@ public class Manager {
                         String keyboard = scanner.next().toUpperCase();
                         if("Y".equals(keyboard)) {
                             this.automataAFD = new AFD();
-                            System.out.println("Creado Automata Finito Determinista con el estado inicial Q0");
-                        } else System.out.println("Cancelado!\n\n");
+                            boxMessage("Creado Automata Finito Determinista con el estado inicial Q0");
+                        } else boxMessage("Cancelado!\n\n");
                     }
                     break;
                 }
                 case 2: {
                     if(this.automataAFD == null) {
-                        System.out.println("No hay un automata para editar! :(");
+                        boxMessage("No hay un automata para editar! :(");
                         break;
                     }
                     int opcion = menuEdicion();
-                    System.out.println("opcion : "+opcion);
                     switch(opcion) {
                         case 1: {
                             this.automataAFD.crearEstadoConsola();
@@ -139,14 +136,12 @@ public class Manager {
                 }
                     
                 default: {
-                    System.out.println("Por favor eliga una opción válida!");
-                    System.out.println("----------------------------------\n\n");
+                    boxMessage("Por favor elija una opción válida!");
                     menuDeterminista();
                 }
             }
         } catch(Exception e) {
-            System.out.println("Por favor eliga una opción válida!");
-            System.out.println("----------------------------------\n\n");
+            boxMessage("Por favor elija una opción válida!");
             menuDeterminista();
         }
         menuDeterminista();
@@ -163,7 +158,7 @@ public class Manager {
     
     private int menuEdicion() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("____________________________________");
+        System.out.println("________MENU EDICION AUTOMATA_______");
         System.out.println("| 1. Crear estado                  |");
         System.out.println("| 2. Eliminar estado               |");
         System.out.println("| 3. Crear enlace                  |");
@@ -175,12 +170,20 @@ public class Manager {
         try {
             int opc = scan.nextInt();
             if(opc >= 1 && opc <= 7) return opc;
-            else System.out.println("\nIngrese una opción valida!\n\n");
+            else boxMessage("Ingrese una opción valida!");
         } catch(Exception ex) {
-            System.out.println("\nIngrese una opción valida!\n\n");
+            boxMessage("Ingrese una opción valida!");
         }
         return menuEdicion();
     }
     
+    
+    
+    private void boxMessage(String msg) {
+        String msgComp = "_".repeat(msg.length()+4)+"\n";
+        msgComp += "| " + msg + " |\n";
+        msgComp += "|" + "-".repeat(msg.length()+2) + "|\n\n";
+        System.out.println(msgComp);
+    }
     
 }
