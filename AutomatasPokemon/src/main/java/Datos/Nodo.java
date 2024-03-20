@@ -29,11 +29,25 @@ public class Nodo {
         return this.enlaces.remove(enlace);
     }
     
+    public boolean eliminarEnlace(int toNodoId) {
+        return this.enlaces.removeIf(enlace -> enlace.To == toNodoId);
+    }
+    
     public boolean esAceptacion() {
         return this.aceptacion;
     }
     
     public void cambiarAceptacion() {
         this.aceptacion = !this.aceptacion;
+    }
+    
+    public boolean tieneEnlace(String key) {
+        try {
+            Conexion n = this.enlaces.stream().filter(enlace -> enlace.key.equals(key)).findAny().get();
+            if(n != null) return true;
+        } catch(Exception e) {
+            return false;
+        }
+        return false;
     }
 }

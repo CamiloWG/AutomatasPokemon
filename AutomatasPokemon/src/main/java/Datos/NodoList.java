@@ -21,15 +21,20 @@ public class NodoList {
         this.Nodos = new ArrayList<Nodo>();        
     }
     
-    public void addNodo(boolean aceptacion) {
+    public int addNodo(boolean aceptacion) {
         Nodo nuevoNodo = new Nodo(currentId, aceptacion);
         this.Nodos.add(nuevoNodo);
         this.currentId++;
+        return nuevoNodo.id;
     }
     
     public boolean deleteNodo(int id) {
         try{
-            this.Nodos.removeIf(nodo -> nodo.id == id);
+            if(this.Nodos.removeIf(nodo -> nodo.id == id)) {
+                for(Nodo nodo : Nodos) {
+                    nodo.eliminarEnlace(id);
+                }
+            }
             return true;
         } catch(Exception e) {
             return false;
