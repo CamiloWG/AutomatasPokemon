@@ -25,8 +25,9 @@ public class Manager {
         Scanner scanner = new Scanner(System.in);
         if(welcome) {
             System.out.println("Bienvenido al creador de autómatas Pokemon:");
-            System.out.println("Para empezar, elija el tipo de autómata: \n1. Finito Determinista \n2. Finito no determinista \n3. Lambda\n4. Salir");
+            
         }
+        System.out.println("Elija el tipo de autómata: \n1. Finito Determinista \n2. Finito no determinista \n3. Lambda\n4. Salir");
         try {
             int tipo = scanner.nextInt();
             switch(tipo) {
@@ -178,8 +179,8 @@ public class Manager {
         System.out.println("________MENU EDICION AUTOMATA_______");
         System.out.println("| 1. Crear estado                  |");
         System.out.println("| 2. Eliminar estado               |");
-        System.out.println("| 3. Crear enlace                  |");
-        System.out.println("| 4. Eliminar enlace               |");
+        System.out.println("| 3. Crear transicion              |");
+        System.out.println("| 4. Eliminar transicion           |");
         System.out.println("| 5. Editar estados de aceptacion  |");
         System.out.println("| 6. Cambiar estado inicial        |");
         System.out.println("| 7. Volver                        |");
