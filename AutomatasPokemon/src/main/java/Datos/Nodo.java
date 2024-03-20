@@ -56,6 +56,16 @@ public class Nodo {
         return false;
     }
     
+    public boolean tieneEnlace(String key, int to) {
+        try {
+            Conexion n = this.enlaces.stream().filter(enlace -> enlace.key.equals(key) && enlace.To == 0).findAny().get();
+            if(n != null) return true;
+        } catch(Exception e) {
+            return false;
+        }
+        return false;
+    }
+    
     @Override
     public String toString() {
         String str = "Estado: Q" + this.id + " | " + (this.enlaces.isEmpty() ? "Sin transiciones" : "Transiciones: ");
