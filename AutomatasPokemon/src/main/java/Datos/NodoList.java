@@ -44,4 +44,10 @@ public class NodoList {
     public Nodo getNodo(int id) {
         return this.Nodos.stream().filter(nodo -> nodo.id == id).findAny().get();
     }
+    
+    public void printList() {
+        for(Nodo nodo : Nodos) {
+            System.out.println(nodo);
+        }
+    }
 }

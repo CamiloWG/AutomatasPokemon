@@ -14,9 +14,11 @@ import java.util.Scanner;
 public class Manager {
     
     private AFD automataAFD;
-
+    private boolean editing;
+    
     public Manager() {
         this.automataAFD = null;
+        this.editing = false;
     }
     
     public void crearPokemon(boolean welcome) {
@@ -67,9 +69,13 @@ public class Manager {
         System.out.println(" | ------ 3. Ver Autómata ------------- |");
         System.out.println(" | ------ 4. Borrar Autómata ---------- |");
         System.out.println(" | ------ 5. Usar Autómata ------------ |");
-        System.out.println(" | ------ 5. Volver al menú principal - |");
+        System.out.println(" | ------ 6. Volver al menú principal - |");
         try {
             int tipo = scanner.nextInt();
+            if(tipo >= 2 && tipo <= 5 && this.automataAFD == null) {
+                boxMessage("No hay un automata para esta opción! :(");
+                menuDeterminista();
+            }
             switch(tipo) {
                 case 1: {
                     if(this.automataAFD == null) {
@@ -87,57 +93,68 @@ public class Manager {
                     }
                     break;
                 }
-                case 2: {
-                    if(this.automataAFD == null) {
-                        boxMessage("No hay un automata para editar! :(");
-                        break;
-                    }
-                    int opcion = menuEdicion();
-                    switch(opcion) {
-                        case 1: {
-                            this.automataAFD.crearEstadoConsola();
-                            break;
-                        }
-                        case 2: {
-                            this.automataAFD.eliminarEstadoConsola();
-                            break;
-                        }
-                        case 3: {
-                            this.automataAFD.crearEnlaceConsola();
-                            break;
-                        }
-                        case 4: {
-                            this.automataAFD.eliminarEnlaceConsola();
-                            break;
-                        }
-                        case 5: {
-                            this.automataAFD.cambiarAceptacionConsola();
-                            break;
-                        }
-                        case 6: {
-                            this.automataAFD.cambiarInicialConsola();
-                            break;
-                        }
-                        default: break;
-                    }
+                case 2: { 
+                    int opcion = 7;
+                    do {
+                        opcion = menuEdicion();
+                        switch(opcion) {
+                            case 1: {
+                                this.automataAFD.crearEstadoConsola();
+                                break;
+                            }
+                            case 2: {
+                                this.automataAFD.eliminarEstadoConsola();
+                                break;
+                            }
+                            case 3: {
+                                this.automataAFD.crearEnlaceConsola();
+                                break;
+                            }
+                            case 4: {
+                                this.automataAFD.eliminarEnlaceConsola();
+                                break;
+                            }
+                            case 5: {
+                                this.automataAFD.cambiarAceptacionConsola();
+                                break;
+                            }
+                            case 6: {
+                                this.automataAFD.cambiarInicialConsola();
+                                break;
+                            }
+                            default: break;
+                        }    
+                    }while(opcion != 7);
+                    
                     break;
                 }
                 case 3: {
-                    
+                    this.automataAFD.printAutomata();
                     break;
                 }
                 case 4: {
-                    
+                    boxMessage("¿Estás seguro que quieres eliminar el automata?");
+                    System.out.println("Y = Aceptar | Otro caracter = Cancelar");
+                    String opc = scanner.next().toUpperCase();
+                    if("Y".equals(opc)) {
+                        this.automataAFD = null;
+                        boxMessage("El autómata determinista ha sido eliminado exitosamente!");
+                    } else boxMessage("Cancelado!");
                     break;
                 }
                 case 5: {
                     
                     break;
                 }
+                case 6: {
+                    crearPokemon(false);
+                    return;
+                }
                     
                 default: {
                     boxMessage("Por favor elija una opción válida!");
                     menuDeterminista();
+                    break;
                 }
             }
         } catch(Exception e) {

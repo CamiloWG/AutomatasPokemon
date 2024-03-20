@@ -188,5 +188,10 @@ public class AFD {
        }
        System.out.println("\n\n");
    }
+   
+   
+   public void printAutomata() {
+       this.automata.printList();
+   }
     
 }

@@ -50,4 +50,14 @@ public class Nodo {
         }
         return false;
     }
+    
+    @Override
+    public String toString() {
+        String str = "Estado: Q" + this.id + " | " + (this.enlaces.isEmpty() ? "Sin transiciones" : "Transiciones: ");
+        for(Conexion enlace : enlaces) {
+            str += "Q"+this.id+"--"+ enlace.key + "-->Q"+ enlace.To + "  ";
+        }
+        str += " | Aceptacion: " + (this.aceptacion ? "Si" : "No");
+        return str;
+    }
 }
