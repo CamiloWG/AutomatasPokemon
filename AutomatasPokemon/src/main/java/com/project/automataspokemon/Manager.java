@@ -143,7 +143,7 @@ public class Manager {
                     break;
                 }
                 case 5: {
-                    
+                    this.automataAFD.validarCadenaConsola();
                     break;
                 }
                 case 6: {

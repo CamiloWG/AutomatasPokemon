@@ -41,6 +41,11 @@ public class Nodo {
         this.aceptacion = !this.aceptacion;
     }
     
+    public int getNextEstado(String key) {
+        Conexion n = this.enlaces.stream().filter(enlace -> enlace.key.equals(key)).findAny().get();
+        return n.To;
+    }
+    
     public boolean tieneEnlace(String key) {
         try {
             Conexion n = this.enlaces.stream().filter(enlace -> enlace.key.equals(key)).findAny().get();
