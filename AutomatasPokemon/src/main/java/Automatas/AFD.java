@@ -14,7 +14,7 @@ import java.util.Scanner;
  * @author Camilo & Paula
  */
 public class AFD {
-   private NodoList automata;
+   private final NodoList automata;
    
    public AFD() {
        this.automata = new NodoList();
@@ -124,6 +124,10 @@ public class AFD {
        System.out.println("| Ingrese el número del estado: |");
        try {
            int num = scan.nextInt();
+           if(num == this.automata.nodoInicial) {
+               System.out.println("El estado inicial no se puede eliminar!");
+               return;
+           }
            if(eliminarEstado(num)) {
                System.out.println("El estado Q"+num+" se eliminó exitosamente");
            } else System.out.println("Por favor ingrese un estado existente!");
@@ -235,10 +239,6 @@ public class AFD {
    public void printAutomata() {
        this.automata.printList();
    }
-   
-   
-   
-   
     
 }
 
