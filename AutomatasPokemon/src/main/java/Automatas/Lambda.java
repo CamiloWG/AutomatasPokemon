@@ -77,25 +77,66 @@ public class Lambda {
    }
     
     private boolean validarCadena(String cadena) {
-       boolean aceptada;
-       try {
+        try {
             Nodo currentNodo = this.automata.getNodo(this.automata.nodoInicial);
-            aceptada = currentNodo.esAceptacion();
-            for(char c : cadena.toCharArray()) {
-                String key = ""+c;
-                if(currentNodo.tieneEnlace(key) || currentNodo.tieneEnlace("^")) {
-                    currentNodo = this.automata.getNodo(currentNodo.getNextEstado(key));
-                    aceptada = currentNodo.esAceptacion();
-                } else {
-                    return false;
+            return validarVariasTransiciones(currentNodo, cadena, 0);
+        } catch(Exception e) {
+            System.out.println("ERROR: Error al validar la cadena");
+            return false;
+        }
+    }
+
+    private boolean validarVariasTransiciones(Nodo nodo, String cadena, int indice) {
+        //System.out.println("Validando nodo Q" + nodo.id + " con índice " + indice);
+        if (indice == cadena.length()) {
+            //System.out.println("Llegamos al final de la cadena, estado actual: Q" + nodo.id);
+            return nodo.esAceptacion();
+        }
+
+        char c = cadena.charAt(indice);
+        String key = String.valueOf(c);
+        //System.out.println("Carácter actual: " + c);
+
+        if (nodo.tieneEnlace(key)) {
+            boolean rutaValida = false;
+            for (Conexion enlace : nodo.getEnlaces()) {
+                if (enlace.key.equals(key)) {
+                    int siguienteEstado = enlace.To;
+                    Nodo siguienteNodo = this.automata.getNodo(siguienteEstado);
+                    //System.out.println("Transición directa desde Q" + nodo.id + " con '" + key + "' a Q" + siguienteEstado);
+                    if (validarVariasTransiciones(siguienteNodo, cadena, indice + 1)) {
+                        rutaValida = true;
+                        break; 
+                    }
                 }
             }
-       } catch(Exception e) {
-           System.out.println("ERROR: Error al validar la cadena");
-           return false;
-       }
-       return aceptada;
-   }
+            if (rutaValida) {
+                return true; 
+            }
+        }
+
+        // Transiciones lambda
+        if (nodo.tieneEnlace("^")) {
+            boolean rutaValida = false;
+            for (Conexion enlace : nodo.getEnlaces()) {
+                if (enlace.key.equals("^")) {
+                    int siguienteEstado = enlace.To;
+                    Nodo siguienteNodo = this.automata.getNodo(siguienteEstado);
+                    //System.out.println("Avanzando con transición lambda desde Q" + nodo.id + " hasta Q" + siguienteEstado);
+                    if (validarVariasTransiciones(siguienteNodo, cadena, indice)) {
+                        rutaValida = true;
+                        break;
+                    }
+                }
+            }
+            if (rutaValida) {
+                return true; 
+            }
+        }
+
+        //System.out.println("No se encontró ninguna transición válida desde Q" + nodo.id);
+        return false;
+    }
     
     // PUBLICS
     

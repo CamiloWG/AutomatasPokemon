@@ -5,6 +5,7 @@
 package Datos;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -64,6 +65,10 @@ public class Nodo {
             return false;
         }
         return false;
+    }
+    
+    public List<Conexion> getEnlaces() {
+        return this.enlaces;
     }
     
     @Override
