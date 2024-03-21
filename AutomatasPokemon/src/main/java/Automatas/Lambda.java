@@ -87,30 +87,29 @@ public class Lambda {
 
     private boolean validarVariasTransiciones(Nodo nodo, String cadena, int indice) {
         //System.out.println("Validando nodo Q" + nodo.id + " con índice " + indice);
+
         if (indice == cadena.length()) {
             //System.out.println("Llegamos al final de la cadena, estado actual: Q" + nodo.id);
-            return nodo.esAceptacion();
-        }
+            if (nodo.esAceptacion()) {
+                return true;
+            }
+        } else {
+            char c = cadena.charAt(indice);
+            String key = String.valueOf(c);
+            //System.out.println("Carácter actual: " + c);
 
-        char c = cadena.charAt(indice);
-        String key = String.valueOf(c);
-        //System.out.println("Carácter actual: " + c);
-
-        if (nodo.tieneEnlace(key)) {
-            boolean rutaValida = false;
-            for (Conexion enlace : nodo.getEnlaces()) {
-                if (enlace.key.equals(key)) {
-                    int siguienteEstado = enlace.To;
-                    Nodo siguienteNodo = this.automata.getNodo(siguienteEstado);
-                    //System.out.println("Transición directa desde Q" + nodo.id + " con '" + key + "' a Q" + siguienteEstado);
-                    if (validarVariasTransiciones(siguienteNodo, cadena, indice + 1)) {
-                        rutaValida = true;
-                        break; 
+            // Transiciones directas
+            if (nodo.tieneEnlace(key)) {
+                for (Conexion enlace : nodo.getEnlaces()) {
+                    if (enlace.key.equals(key)) {
+                        int siguienteEstado = enlace.To;
+                        Nodo siguienteNodo = this.automata.getNodo(siguienteEstado);
+                        //System.out.println("Transición directa desde Q" + nodo.id + " con '" + key + "' a Q" + siguienteEstado);
+                        if (validarVariasTransiciones(siguienteNodo, cadena, indice + 1)) {
+                            return true;
+                        }
                     }
                 }
-            }
-            if (rutaValida) {
-                return true; 
             }
         }
 
@@ -125,14 +124,13 @@ public class Lambda {
                     if (validarVariasTransiciones(siguienteNodo, cadena, indice)) {
                         rutaValida = true;
                         break;
-                    }  
+                    }
                 }
             }
             if (rutaValida) {
-                return true; 
+                return true;
             }
         }
-        
 
         //System.out.println("No se encontró ninguna transición válida desde Q" + nodo.id);
         return false;
