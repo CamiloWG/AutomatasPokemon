@@ -58,7 +58,7 @@ public class Nodo {
     
     public boolean tieneEnlace(String key, int to) {
         try {
-            Conexion n = this.enlaces.stream().filter(enlace -> enlace.key.equals(key) && enlace.To == 0).findAny().get();
+            Conexion n = this.enlaces.stream().filter(enlace -> enlace.key.equals(key) && enlace.To == to).findAny().get();
             if(n != null) return true;
         } catch(Exception e) {
             return false;

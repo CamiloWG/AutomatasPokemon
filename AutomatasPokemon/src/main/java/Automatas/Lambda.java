@@ -8,6 +8,7 @@ import Datos.Conexion;
 import Datos.Nodo;
 import Datos.NodoList;
 import java.util.Scanner;
+
 /**
  *
  * @author Camilo & Paula
@@ -74,6 +75,30 @@ public class Lambda {
            return false;
        }
    }
+    
+    private boolean validarCadena(String cadena) {
+       boolean aceptada;
+       try {
+            Nodo currentNodo = this.automata.getNodo(this.automata.nodoInicial);
+            aceptada = currentNodo.esAceptacion();
+            for(char c : cadena.toCharArray()) {
+                String key = ""+c;
+                if(currentNodo.tieneEnlace(key) || currentNodo.tieneEnlace("^")) {
+                    currentNodo = this.automata.getNodo(currentNodo.getNextEstado(key));
+                    aceptada = currentNodo.esAceptacion();
+                } else {
+                    return false;
+                }
+            }
+       } catch(Exception e) {
+           System.out.println("ERROR: Error al validar la cadena");
+           return false;
+       }
+       return aceptada;
+   }
+    
+    // PUBLICS
+    
     public void crearEstadoConsola() {
        Scanner scan = new Scanner(System.in);
        System.out.println("\n\n");
@@ -111,6 +136,8 @@ public class Lambda {
        System.out.println("| Ingrese la transición a crear con la siguiente sintaxis: |");
        System.out.println("|        <numEstadoDesde> <caracter> <numEstadoHasta>      |");
        System.out.println("|                     Ejemplo: 1 b 3                       |");
+       System.out.println("|  para crear una transición lambda use este caracter  '^' |");
+       System.out.println("|                     Ejemplo: 1 ^ 3                       |");
        try {
            int from = scan.nextInt();
            String key = scan.next();
@@ -183,6 +210,29 @@ public class Lambda {
        }
        System.out.println("\n\n");
    }
+   
+   public void validarCadenaConsola() {
+       Scanner scan = new Scanner(System.in);
+       System.out.println("\n\n");
+       System.out.println("_______________________________________________");
+       System.out.println("| ---------- Validacion de cadenas ---------- |");
+       System.out.println("| Ingrese la cadena a validar a continuacion: |");
+       try {
+           String str = scan.nextLine();
+           if(validarCadena(str)) {
+               System.out.println("La cadena "+ str + " es ACEPTADA");
+           } else System.out.println("La cadena " + str + " es DENEGADA");
+       } catch(Exception e) {
+           System.out.println("ERROR: Ingrese una cadena válida");
+       }
+       System.out.println("\n\n");
+   }
+   
+   
+   public void printAutomata() {
+       this.automata.printList();
+   }
+   
    
    
 }

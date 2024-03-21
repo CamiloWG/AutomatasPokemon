@@ -5,6 +5,7 @@
 package com.project.automataspokemon;
 
 import Automatas.AFD;
+import Automatas.Lambda;
 import java.util.Scanner;
 
 /**
@@ -14,10 +15,12 @@ import java.util.Scanner;
 public class Manager {
     
     private AFD automataAFD;
+    private Lambda automataLambda;
     private boolean editing;
     
     public Manager() {
         this.automataAFD = null;
+        this.automataLambda = null;
         this.editing = false;
     }
     
@@ -171,6 +174,107 @@ public class Manager {
     }
     
     private void menuLambda() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n\n\n");
+        System.out.println(" | - Autómata finito no determinista Lambda: - |");
+        System.out.println(" | ----------- 1. Crear Autómata ------------- |");
+        System.out.println(" | ----------- 2. Editar Autómata ------------ |");
+        System.out.println(" | ----------- 3. Ver Autómata --------------- |");
+        System.out.println(" | ----------- 4. Borrar Autómata ------------ |");
+        System.out.println(" | ----------- 5. Usar Autómata -------------- |");
+        System.out.println(" | ----------- 6. Volver al menú principal --- |");
+        try {
+            int tipo = scanner.nextInt();
+            if(tipo >= 2 && tipo <= 5 && this.automataLambda == null) {
+                boxMessage("No hay un automata para esta opción! :(");
+                menuLambda();
+            }
+            switch(tipo) {
+                case 1: {
+                    if(this.automataLambda == null) {
+                        this.automataLambda = new Lambda();
+                        System.out.println("Creado Automata Finito no Determinista con transiciones Lambda con el estado inicial Q0");
+                    } else {
+                        System.out.println("Ya hay un automata creado, ¿deseas crear uno nuevo?");
+                        System.out.println("ADVERTENCIA: Se eliminará el autómata anterior");
+                        System.out.println("Y = Crear uno nuevo | Cualquier otro caracter para cancelar");
+                        String keyboard = scanner.next().toUpperCase();
+                        if("Y".equals(keyboard)) {
+                            this.automataLambda = new Lambda();
+                            boxMessage("Creado Automata Finito no Determinista con transiciones Lambda n con el estado inicial Q0");
+                        } else boxMessage("Cancelado!\n\n");
+                    }
+                    break;
+                }
+                case 2: { 
+                    int opcion = 7;
+                    do {
+                        opcion = menuEdicion();
+                        switch(opcion) {
+                            case 1: {
+                                this.automataLambda.crearEstadoConsola();
+                                break;
+                            }
+                            case 2: {
+                                this.automataLambda.eliminarEstadoConsola();
+                                break;
+                            }
+                            case 3: {
+                                this.automataLambda.crearEnlaceConsola();
+                                break;
+                            }
+                            case 4: {
+                                this.automataLambda.eliminarEnlaceConsola();
+                                break;
+                            }
+                            case 5: {
+                                this.automataLambda.cambiarAceptacionConsola();
+                                break;
+                            }
+                            case 6: {
+                                this.automataLambda.cambiarInicialConsola();
+                                break;
+                            }
+                            default: break;
+                        }    
+                    }while(opcion != 7);
+                    
+                    break;
+                }
+                case 3: {
+                    this.automataLambda.printAutomata();
+                    break;
+                }
+                case 4: {
+                    boxMessage("¿Estás seguro que quieres eliminar el automata?");
+                    System.out.println("Y = Aceptar | Otro caracter = Cancelar");
+                    String opc = scanner.next().toUpperCase();
+                    if("Y".equals(opc)) {
+                        this.automataLambda = null;
+                        boxMessage("El autómata determinista ha sido eliminado exitosamente!");
+                    } else boxMessage("Cancelado!");
+                    break;
+                }
+                case 5: {
+                    this.automataLambda.validarCadenaConsola();
+                    break;
+                }
+                case 6: {
+                    crearPokemon(false);
+                    return;
+                }
+                    
+                default: {
+                    boxMessage("Por favor elija una opción válida!");
+                    menuLambda();
+                    break;
+                }
+            }
+        } catch(Exception e) {
+            boxMessage("Por favor elija una opción válida!");
+            menuLambda();
+        }
+        menuLambda();
         
     }
     
