@@ -5,6 +5,7 @@
 package com.project.automataspokemon;
 
 import Automatas.AFD;
+import Automatas.AFN;
 import Automatas.Lambda;
 import java.util.Scanner;
 
@@ -15,11 +16,13 @@ import java.util.Scanner;
 public class Manager {
     
     private AFD automataAFD;
+    private AFN automataAFN;
     private Lambda automataLambda;
     private boolean editing;
     
     public Manager() {
         this.automataAFD = null;
+        this.automataAFN = null;
         this.automataLambda = null;
         this.editing = false;
     }
@@ -170,6 +173,107 @@ public class Manager {
     }
     
     private void menuNoDeterminista() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("\n\n\n");
+        System.out.println(" | ---- Autómata finito no determinista : ---- |");
+        System.out.println(" | ----------- 1. Crear Autómata ------------- |");
+        System.out.println(" | ----------- 2. Editar Autómata ------------ |");
+        System.out.println(" | ----------- 3. Ver Autómata --------------- |");
+        System.out.println(" | ----------- 4. Borrar Autómata ------------ |");
+        System.out.println(" | ----------- 5. Usar Autómata -------------- |");
+        System.out.println(" | ----------- 6. Volver al menú principal --- |");
+        try {
+            int tipo = scanner.nextInt();
+            if(tipo >= 2 && tipo <= 5 && this.automataAFN == null) {
+                boxMessage("No hay un automata para esta opción! :(");
+                menuLambda();
+            }
+            switch(tipo) {
+                case 1: {
+                    if(this.automataAFN == null) {
+                        this.automataAFN = new AFN();
+                        System.out.println("Creado Automata Finito no Determinista con el estado inicial Q0");
+                    } else {
+                        System.out.println("Ya hay un automata creado, ¿deseas crear uno nuevo?");
+                        System.out.println("ADVERTENCIA: Se eliminará el autómata anterior");
+                        System.out.println("Y = Crear uno nuevo | Cualquier otro caracter para cancelar");
+                        String keyboard = scanner.next().toUpperCase();
+                        if("Y".equals(keyboard)) {
+                            this.automataAFN = new AFN();
+                            boxMessage("Creado Automata Finito no Determinista con el estado inicial Q0");
+                        } else boxMessage("Cancelado!\n\n");
+                    }
+                    break;
+                }
+                case 2: { 
+                    int opcion = 7;
+                    do {
+                        opcion = menuEdicion();
+                        switch(opcion) {
+                            case 1: {
+                                this.automataAFN.crearEstadoConsola();
+                                break;
+                            }
+                            case 2: {
+                                this.automataAFN.eliminarEstadoConsola();
+                                break;
+                            }
+                            case 3: {
+                                this.automataAFN.crearEnlaceConsola();
+                                break;
+                            }
+                            case 4: {
+                                this.automataAFN.eliminarEnlaceConsola();
+                                break;
+                            }
+                            case 5: {
+                                this.automataAFN.cambiarAceptacionConsola();
+                                break;
+                            }
+                            case 6: {
+                                this.automataAFN.cambiarInicialConsola();
+                                break;
+                            }
+                            default: break;
+                        }    
+                    }while(opcion != 7);
+                    
+                    break;
+                }
+                case 3: {
+                    this.automataAFN.printAutomata();
+                    break;
+                }
+                case 4: {
+                    boxMessage("¿Estás seguro que quieres eliminar el automata?");
+                    System.out.println("Y = Aceptar | Otro caracter = Cancelar");
+                    String opc = scanner.next().toUpperCase();
+                    if("Y".equals(opc)) {
+                        this.automataAFN = null;
+                        boxMessage("El autómata determinista ha sido eliminado exitosamente!");
+                    } else boxMessage("Cancelado!");
+                    break;
+                }
+                case 5: {
+                    this.automataAFN.validarCadenaConsola();
+                    break;
+                }
+                case 6: {
+                    crearPokemon(false);
+                    return;
+                }
+                    
+                default: {
+                    boxMessage("Por favor elija una opción válida!");
+                    menuNoDeterminista();
+                    break;
+                }
+            }
+        } catch(Exception e) {
+            boxMessage("Por favor elija una opción válida!");
+            menuNoDeterminista();
+        }
+        menuNoDeterminista();
         
     }
     
@@ -280,7 +384,7 @@ public class Manager {
     
     private int menuEdicion() {
         Scanner scan = new Scanner(System.in);
-        System.out.println("________MENU EDICION AUTOMATA_______");
+        System.out.println("_______MENU EDICION AUTOMATA________");
         System.out.println("| 1. Crear estado                  |");
         System.out.println("| 2. Eliminar estado               |");
         System.out.println("| 3. Crear transicion              |");

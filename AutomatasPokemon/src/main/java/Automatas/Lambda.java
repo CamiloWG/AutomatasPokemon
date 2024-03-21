@@ -34,14 +34,13 @@ public class Lambda {
            Nodo nodoFrom = this.automata.getNodo(from);
            Nodo nodoTo = this.automata.getNodo(to);
            if(nodoFrom.tieneEnlace(key, to)) {
-               System.out.println("ERROR: Ya hay una transición desde este estado con el caracter: "+ key + " al estado " + to);
+               System.out.println("ERROR: Ya hay una transición desde este estado con el caracter: "+ key + " al estado Q" + to);
                return false;
             }
            Conexion enlace = new Conexion(key, to);
            nodoFrom.agregarEnlace(enlace);
            return true;
         } catch(Exception e) {
-           System.out.println(e);
            return false;
         }
     }
@@ -126,13 +125,14 @@ public class Lambda {
                     if (validarVariasTransiciones(siguienteNodo, cadena, indice)) {
                         rutaValida = true;
                         break;
-                    }
+                    }  
                 }
             }
             if (rutaValida) {
                 return true; 
             }
         }
+        
 
         //System.out.println("No se encontró ninguna transición válida desde Q" + nodo.id);
         return false;
