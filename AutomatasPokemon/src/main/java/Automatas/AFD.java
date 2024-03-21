@@ -165,8 +165,8 @@ public class AFD {
        System.out.println("_______________________________________________________________");
        System.out.println("| ---------------- Eliminacion de transición ---------------- |");
        System.out.println("| Ingrese la transición a eliminar con la siguiente sintaxis: |");
-       System.out.println("|        <numEstadoDesde> <caracter> <numEstadoHasta>      |");
-       System.out.println("|                     Ejemplo: 1 b 3                       |");
+       System.out.println("|         <numEstadoDesde> <caracter> <numEstadoHasta>        |");
+       System.out.println("|                       Ejemplo: 1 b 3                        |");
        try {
            int from = scan.nextInt();
            String key = scan.next();

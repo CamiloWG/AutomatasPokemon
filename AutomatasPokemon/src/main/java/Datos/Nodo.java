@@ -25,8 +25,8 @@ public class Nodo {
         this.enlaces.add(enlace);
     }
     
-    public boolean eliminarEnlace(Conexion enlace) {
-        return this.enlaces.remove(enlace);
+    public boolean eliminarEnlace(Conexion del) {
+        return this.enlaces.removeIf(enlace -> enlace.key.equals(del.key) && enlace.To == del.To);
     }
     
     public boolean eliminarEnlace(int toNodoId) {

@@ -93,7 +93,7 @@ public class Manager {
                         if("Y".equals(keyboard)) {
                             this.automataAFD = new AFD();
                             boxMessage("Creado Automata Finito Determinista con el estado inicial Q0");
-                        } else boxMessage("Cancelado!\n\n");
+                        } else boxMessage("Cancelado!");
                     }
                     break;
                 }
