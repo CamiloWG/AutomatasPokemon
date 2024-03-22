@@ -12,7 +12,7 @@ import java.util.ArrayList;
  */
 public class NodoList {
     public int nodoInicial;
-    private ArrayList<Nodo> Nodos;
+    private final ArrayList<Nodo> Nodos;
     private int currentId;
     
     public NodoList() {
@@ -49,5 +49,9 @@ public class NodoList {
         for(Nodo nodo : Nodos) {
             System.out.println(nodo);
         }
+    }
+    
+    public ArrayList<Nodo> getNodosList() {
+        return this.Nodos;
     }
 }

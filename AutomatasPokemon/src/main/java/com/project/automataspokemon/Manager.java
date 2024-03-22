@@ -181,12 +181,13 @@ public class Manager {
         System.out.println(" | ----------- 3. Ver Autómata --------------- |");
         System.out.println(" | ----------- 4. Borrar Autómata ------------ |");
         System.out.println(" | ----------- 5. Usar Autómata -------------- |");
-        System.out.println(" | ----------- 6. Volver al menú principal --- |");
+        System.out.println(" | ----------- 6. Transformar a AFD ---------- |");
+        System.out.println(" | ----------- 7. Volver al menú principal --- |");
         try {
             int tipo = scanner.nextInt();
-            if(tipo >= 2 && tipo <= 5 && this.automataAFN == null) {
+            if(tipo >= 2 && tipo <= 6 && this.automataAFN == null) {
                 boxMessage("No hay un automata para esta opción! :(");
-                menuLambda();
+                menuNoDeterminista();
             }
             switch(tipo) {
                 case 1: {
@@ -259,6 +260,10 @@ public class Manager {
                     break;
                 }
                 case 6: {
+                    this.automataAFN.transformarAfdConsola();
+                    break;
+                }
+                case 7: {
                     crearPokemon(false);
                     return;
                 }
@@ -271,6 +276,7 @@ public class Manager {
             }
         } catch(Exception e) {
             boxMessage("Por favor elija una opción válida!");
+            System.out.println(e);
             menuNoDeterminista();
         }
         menuNoDeterminista();

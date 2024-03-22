@@ -7,7 +7,13 @@ package Automatas;
 import Datos.Conexion;
 import Datos.Nodo;
 import Datos.NodoList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  *
@@ -122,7 +128,82 @@ public class AFN {
         return false;
     }
    
-   
+    private ArrayList<String> transformToAFD() {
+        ArrayList<Nodo> nodosList = automata.getNodosList();
+        Map<String, Integer> estadosAFD = getEstadosToAFD(nodosList);
+        ArrayList<String> transiciones = new ArrayList<String>();
+        
+        for(Map.Entry<String, Integer> estado : estadosAFD.entrySet()) {
+            String[] nodos = estado.getKey().split("-");
+            for(String alfabeto : getAlfabeto(nodosList)) {
+                Set<Integer> idsFindedTo = new HashSet<Integer>();
+                for(String idNodo : nodos) {
+                    for(Conexion enlace : automata.getNodo(Integer.parseInt(idNodo)).getEnlaces()){
+                        if(enlace.key.equals(alfabeto)){
+                            idsFindedTo.add(enlace.To);
+                        }
+                    }
+                }
+                if(!idsFindedTo.isEmpty()) {
+                    ArrayList<Integer> idsFinded = new ArrayList<>(idsFindedTo);
+                    Collections.sort(idsFinded);
+                    String idCompTo = idCompuestaBuilder(idsFinded);
+                    transiciones.add(estado.getValue()+" "+alfabeto+" "+estadosAFD.get(idCompTo));
+                }
+            }
+        }
+        
+        return transiciones;
+    }
+    
+    private Map<String, Integer> getEstadosToAFD(ArrayList<Nodo> nodosList) {
+        int estadosCount = 0; 
+        Set<String> alfabeto = getAlfabeto(nodosList);
+        Set<String> estadosList = new HashSet<String>(); 
+        Map<String, Integer> estados = new HashMap<String, Integer>();
+        estadosList.add("0");
+        for(Nodo nodo : nodosList) {
+            for(String lang : alfabeto) {
+                ArrayList<Integer> toIds = new ArrayList<Integer>();
+                for(Conexion enlace : nodo.getEnlaces()) { 
+                    if(enlace.key.equals(lang)) {
+                        toIds.add(enlace.To);
+                    }
+                } 
+                if(!toIds.isEmpty()) {
+                    Collections.sort(toIds);
+                    estadosList.add(idCompuestaBuilder(toIds));
+                } 
+            }
+        }
+        
+        for(String estado : estadosList) {
+            estados.put(estado, estadosCount++);
+        }
+        return estados;
+    }
+    
+    private Set<String> getAlfabeto(ArrayList<Nodo> nodosList) {
+        Set<String> alfabeto = new HashSet<String>();
+        for(Nodo nodo : nodosList) {
+            for(Conexion enlace : nodo.getEnlaces()) {
+                alfabeto.add(enlace.key);
+            }
+        }
+        return alfabeto;
+    }
+    
+    private String idCompuestaBuilder(ArrayList<Integer> numeros) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < numeros.size(); i++) {
+            sb.append(numeros.get(i));
+            if (i < numeros.size() - 1) {
+                sb.append("-");
+            }
+        }
+
+        return sb.toString();
+    }
    
    // PUBLICS
    
@@ -258,6 +339,14 @@ public class AFN {
        System.out.println("\n\n");
    }
    
+   public void transformarAfdConsola() {
+       System.out.println("\n\n");
+       System.out.println("TRANSICIONES A AFD:");
+       ArrayList<String> transiciones = transformToAFD(); 
+       for(String transicion : transiciones) {
+           System.out.println(transicion);
+       }
+   }
    
    public void printAutomata() {
        this.automata.printList();
