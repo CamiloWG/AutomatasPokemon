@@ -7,6 +7,7 @@ package Automatas;
 import Datos.Conexion;
 import Datos.Nodo;
 import Datos.NodoList;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 /**
@@ -19,6 +20,20 @@ public class AFD {
    public AFD() {
        this.automata = new NodoList();
        this.crearEstado(false);
+   }
+   
+   public AFD(ArrayList<String> listaEnlaces, int estados, ArrayList<Integer> aceptables) {
+       this.automata = new NodoList();
+       for (int i = 0; i < estados; i++) {
+           this.crearEstado(false);
+       }
+       for(String enlaceTxt : listaEnlaces) {
+           String[] enlacePartes = enlaceTxt.split(" ");
+           crearEnlace(Integer.parseInt(enlacePartes[0]), Integer.parseInt(enlacePartes[2]), enlacePartes[1]);
+       }
+       for(int id : aceptables) {
+           cambiarAceptacion(id);
+       }
    }
    
    private int crearEstado(boolean aceptacion) {
