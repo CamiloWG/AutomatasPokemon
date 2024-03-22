@@ -260,15 +260,22 @@ public class Manager {
                     break;
                 }
                 case 6: {
-                    System.out.println("Ya hay un automata determinsita creado, ¿deseas reemplazarlo con la transformacion del AFN?");
-                    System.out.println("ADVERTENCIA: Se eliminará el autómata determinista anterior");
-                    System.out.println("Y = Continuar | Cualquier otro caracter para cancelar");
-                    String keyboard = scanner.next().toUpperCase();
-                    if("Y".equals(keyboard)) {
+                    if(this.automataAFD == null) {
                         this.automataAFD = this.automataAFN.transformarAfdConsola();
-                        boxMessage("Nuevo determinista creado exitosamente a partir del AFN");
+                        boxMessage("Nuevo AFD creado exitosamente a partir del AFN");
                         System.out.println("(Para usarlo por favor vuelva al menú inicial)");
-                    } else boxMessage("Cancelado!\n\n");
+                    } else {
+                        System.out.println("Ya hay un automata determinsita creado, ¿deseas reemplazarlo con la transformacion del AFN?");
+                        System.out.println("ADVERTENCIA: Se eliminará el autómata determinista anterior");
+                        System.out.println("Y = Continuar | Cualquier otro caracter para cancelar");
+                        String keyboard = scanner.next().toUpperCase();
+                        if("Y".equals(keyboard)) {
+                            this.automataAFD = this.automataAFN.transformarAfdConsola();
+                            boxMessage("Nuevo AFD creado exitosamente a partir del AFN");
+                            System.out.println("(Para usarlo por favor vuelva al menú inicial)");
+                        } else boxMessage("Cancelado!\n\n");
+                    }
+                    
                     break;
                 }
                 case 7: {
