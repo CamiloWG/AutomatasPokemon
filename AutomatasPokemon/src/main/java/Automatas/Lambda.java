@@ -7,7 +7,13 @@ package Automatas;
 import Datos.Conexion;
 import Datos.Nodo;
 import Datos.NodoList;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  *
@@ -134,6 +140,35 @@ public class Lambda {
 
         //System.out.println("No se encontró ninguna transición válida desde Q" + nodo.id);
         return false;
+    }
+    
+    
+    private Map<Integer, Map<String, Set<Integer>>> getTransitionsSet() {
+        Map<Integer, Map<String, Set<Integer>>> transitions = new HashMap<Integer, Map<String, Set<Integer>>>();
+        
+        
+        return transitions;
+    }
+    
+    
+    private Set<Integer> getTransitionFromNodo(int from, String key) {
+        Nodo currentNodo = this.automata.getNodo(from);
+        List<Conexion> currentEnlacesFromNodo = currentNodo.getEnlaces();
+        Set<Integer> enlacesTo = new HashSet<Integer>();
+        if(currentEnlacesFromNodo.size() == 0) {
+            enlacesTo.add(from);
+        } 
+        return enlacesTo;
+    }
+    
+    private Set<String> getAlfabeto(ArrayList<Nodo> nodosList) {
+        Set<String> alfabeto = new HashSet<String>();
+        for(Nodo nodo : nodosList) {
+            for(Conexion enlace : nodo.getEnlaces()) {
+                alfabeto.add(enlace.key);
+            }
+        }
+        return alfabeto;
     }
     
     // PUBLICS

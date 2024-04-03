@@ -71,6 +71,10 @@ public class Nodo {
         return this.enlaces;
     }
     
+    public int getEnlacesAmount() {
+        return this.enlaces.size();
+    }
+    
     @Override
     public String toString() {
         String str = "Estado: Q" + this.id + " | " + (this.enlaces.isEmpty() ? "Sin transiciones" : "Transiciones: ");
