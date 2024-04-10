@@ -203,6 +203,7 @@ public class AFN {
             }
         }
         
+        ArrayList<String> provisionalEstado = new ArrayList<String>();
         for(String estadoCompuesto : estadosList) {
             for(String lang : alfabeto) {
                 String[] nodos = estadoCompuesto.split("-");
@@ -217,11 +218,12 @@ public class AFN {
                     }
                     if(!idsFindedTo.isEmpty()) {
                         Collections.sort(idsFindedTo);
-                        estadosList.add(idCompuestaBuilder(idsFindedTo));
+                        provisionalEstado.add(idCompuestaBuilder(idsFindedTo));
                     }
                 }
             }
         }
+        estadosList.addAll(provisionalEstado);
         
         for(String estado : estadosList) {
             estados.put(estado, estadosCount++);

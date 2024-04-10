@@ -290,7 +290,7 @@ public class Manager {
                 }
             }
         } catch(Exception e) {
-            System.out.println(e.getMessage());
+            System.out.println(e);
             boxMessage("Por favor elija una opción válida!");
             menuNoDeterminista();
         }
