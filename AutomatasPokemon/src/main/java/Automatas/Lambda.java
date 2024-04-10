@@ -142,9 +142,10 @@ public class Lambda {
         return false;
     }
     
-    private void transformToAFN() {
+    private AFN transformToAFN() {
         Map<Integer, Map<String, Set<Integer>>> transiciones = this.getTransitionsSet();
         ArrayList<String> enlacesTexto = new ArrayList<String>();
+        ArrayList<Integer> nodosAceptacion = new ArrayList<Integer>();
         for(Map.Entry<Integer, Map<String, Set<Integer>>> estadoInfo : transiciones.entrySet()) {
             for(Map.Entry<String, Set<Integer>> enlace : estadoInfo.getValue().entrySet()) {
                 for(Integer idNodoTo : enlace.getValue()) {
@@ -152,7 +153,14 @@ public class Lambda {
                 }
             }
         }
-        System.out.println(enlacesTexto);
+        for(Nodo nodo : this.automata.getNodosList()) {
+            if(nodo.esAceptacion()){
+                nodosAceptacion.add(nodo.id);
+            }
+        }
+        
+        AFN automataAFN = new AFN(enlacesTexto, transiciones.size(), nodosAceptacion);
+        return automataAFN;
     }
     
     private Map<Integer, Map<String, Set<Integer>>> getTransitionsSet() {
@@ -185,9 +193,19 @@ public class Lambda {
                    enlacesTo.addAll(getTransitionFromNodo(enlace.To, key));
                 }
             } 
-        } else {
-            
+        } 
+        
+        if(enlacesTo.size() > 0) {
+            for(Integer nodoId : enlacesTo) {
+                enlacesTo.addAll(getTransitionFromNodo(nodoId, "^"));
+            }
+        } else if("^".equals(key)) {
+            enlacesTo.addAll(currentEnlacesLambda.stream().map(obj -> obj.To).toList());            
+            for(Conexion enlace : currentEnlacesLambda) {
+               enlacesTo.addAll(getTransitionFromNodo(enlace.To, key));
+            }
         }
+        
         return enlacesTo;
     }
     
@@ -332,11 +350,13 @@ public class Lambda {
        System.out.println("\n\n");
    }
    
-   public void transformarAfnConsola() {
+   public AFN transformarAfnConsola() {
        System.out.println("\n\n");
        System.out.println("_______________________________________________");
        System.out.println("| ---------- Transformacion a AFN ----------- |");
-       this.transformToAFN();
+       AFN newAFN = transformToAFN(); 
+       System.out.println("| - Se realizó la transformación exitosamente |");
+       return newAFN;
    }
    
    

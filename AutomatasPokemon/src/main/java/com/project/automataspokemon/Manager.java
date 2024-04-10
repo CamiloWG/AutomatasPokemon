@@ -290,6 +290,7 @@ public class Manager {
                 }
             }
         } catch(Exception e) {
+            System.out.println(e.getMessage());
             boxMessage("Por favor elija una opción válida!");
             menuNoDeterminista();
         }
@@ -385,7 +386,21 @@ public class Manager {
                     break;
                 }
                 case 6: {
-                    this.automataLambda.transformarAfnConsola();
+                    if(this.automataAFN == null) {
+                        this.automataAFN = this.automataLambda.transformarAfnConsola();
+                        boxMessage("Nuevo AFN creado exitosamente a partir del AFN con transiciones Lambda");
+                        System.out.println("(Para usarlo por favor vuelva al menú inicial)");
+                    } else {
+                        System.out.println("Ya hay un automata no determinsita creado, ¿deseas reemplazarlo con la transformacion del AFN con transiciones lambda?");
+                        System.out.println("ADVERTENCIA: Se eliminará el autómata no determinista anterior");
+                        System.out.println("Y = Continuar | Cualquier otro caracter para cancelar");
+                        String keyboard = scanner.next().toUpperCase();
+                        if("Y".equals(keyboard)) {
+                            this.automataAFN = this.automataLambda.transformarAfnConsola();
+                            boxMessage("Nuevo AFN creado exitosamente a partir del AFN con transiciones lambda");
+                            System.out.println("(Para usarlo por favor vuelva al menú inicial)");
+                        } else boxMessage("Cancelado!\n\n");
+                    }
                     break;
                 }
                 case 7: {
