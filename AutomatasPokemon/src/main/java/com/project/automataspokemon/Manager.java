@@ -306,10 +306,11 @@ public class Manager {
         System.out.println(" | ----------- 3. Ver Autómata --------------- |");
         System.out.println(" | ----------- 4. Borrar Autómata ------------ |");
         System.out.println(" | ----------- 5. Usar Autómata -------------- |");
-        System.out.println(" | ----------- 6. Volver al menú principal --- |");
+        System.out.println(" | ----------- 6. Transformar a AFN ---------- |");
+        System.out.println(" | ----------- 7. Volver al menú principal --- |");
         try {
             int tipo = scanner.nextInt();
-            if(tipo >= 2 && tipo <= 5 && this.automataLambda == null) {
+            if(tipo >= 2 && tipo <= 6 && this.automataLambda == null) {
                 boxMessage("No hay un automata para esta opción! :(");
                 menuLambda();
             }
@@ -384,6 +385,10 @@ public class Manager {
                     break;
                 }
                 case 6: {
+                    this.automataLambda.transformarAfnConsola();
+                    break;
+                }
+                case 7: {
                     crearPokemon(false);
                     return;
                 }

@@ -142,22 +142,52 @@ public class Lambda {
         return false;
     }
     
+    private void transformToAFN() {
+        Map<Integer, Map<String, Set<Integer>>> transiciones = this.getTransitionsSet();
+        ArrayList<String> enlacesTexto = new ArrayList<String>();
+        for(Map.Entry<Integer, Map<String, Set<Integer>>> estadoInfo : transiciones.entrySet()) {
+            for(Map.Entry<String, Set<Integer>> enlace : estadoInfo.getValue().entrySet()) {
+                for(Integer idNodoTo : enlace.getValue()) {
+                    enlacesTexto.add(estadoInfo.getKey() + " " + enlace.getKey() + " " + idNodoTo);
+                }
+            }
+        }
+        System.out.println(enlacesTexto);
+    }
     
     private Map<Integer, Map<String, Set<Integer>>> getTransitionsSet() {
         Map<Integer, Map<String, Set<Integer>>> transitions = new HashMap<Integer, Map<String, Set<Integer>>>();
-        
-        
+        ArrayList<Nodo> nodosLambda = this.automata.getNodosList();
+        Set<String> alfabeto = this.getAlfabeto(nodosLambda);
+        for(Nodo nodo : nodosLambda) {
+            Map<String, Set<Integer>> enlacesTo = new HashMap<String, Set<Integer>>();
+            for(String key : alfabeto) {
+                Set<Integer> idsTo = this.getTransitionFromNodo(nodo.id, key);
+                if(idsTo.size() > 0) enlacesTo.put(key, idsTo);       
+            }
+            if(enlacesTo.size() > 0) transitions.put(nodo.id, enlacesTo);
+        }
         return transitions;
     }
     
     
     private Set<Integer> getTransitionFromNodo(int from, String key) {
         Nodo currentNodo = this.automata.getNodo(from);
-        List<Conexion> currentEnlacesFromNodo = currentNodo.getEnlaces();
+        List<Conexion> currentEnlacesFromNodo = !"^".equals(key) ? currentNodo.getEnlaces().stream().filter(enlace -> enlace.key.equals(key)).toList() : new ArrayList<>();
+        List<Conexion> currentEnlacesLambda = currentNodo.getEnlaces().stream().filter(enlace -> "^".equals(enlace.key)).toList();
         Set<Integer> enlacesTo = new HashSet<Integer>();
-        if(currentEnlacesFromNodo.size() == 0) {
-            enlacesTo.add(from);
-        } 
+        if(!"^".equals(key)) {
+            if(currentEnlacesFromNodo.size() == 0 && currentEnlacesLambda.size() == 0) {
+                return enlacesTo;
+            } else  {
+                enlacesTo.addAll(currentEnlacesFromNodo.stream().map(obj -> obj.To).toList());            
+                for(Conexion enlace : currentEnlacesLambda) {
+                   enlacesTo.addAll(getTransitionFromNodo(enlace.To, key));
+                }
+            } 
+        } else {
+            
+        }
         return enlacesTo;
     }
     
@@ -165,7 +195,7 @@ public class Lambda {
         Set<String> alfabeto = new HashSet<String>();
         for(Nodo nodo : nodosList) {
             for(Conexion enlace : nodo.getEnlaces()) {
-                alfabeto.add(enlace.key);
+                if(!"^".equals(enlace.key)) alfabeto.add(enlace.key);
             }
         }
         return alfabeto;
@@ -300,6 +330,13 @@ public class Lambda {
            System.out.println("ERROR: Ingrese una cadena válida");
        }
        System.out.println("\n\n");
+   }
+   
+   public void transformarAfnConsola() {
+       System.out.println("\n\n");
+       System.out.println("_______________________________________________");
+       System.out.println("| ---------- Transformacion a AFN ----------- |");
+       this.transformToAFN();
    }
    
    

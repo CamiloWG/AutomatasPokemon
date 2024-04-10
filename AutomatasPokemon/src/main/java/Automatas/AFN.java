@@ -27,6 +27,20 @@ public class AFN {
        this.crearEstado(false);
    }
    
+   public AFN(ArrayList<String> listaEnlaces, int estados, ArrayList<Integer> aceptables) {
+       this.automata = new NodoList();
+       for (int i = 0; i < estados; i++) {
+           this.crearEstado(false);
+       }
+       for(String enlaceTxt : listaEnlaces) {
+           String[] enlacePartes = enlaceTxt.split(" ");
+           crearEnlace(Integer.parseInt(enlacePartes[0]), Integer.parseInt(enlacePartes[2]), enlacePartes[1]);
+       }
+       for(int id : aceptables) {
+           cambiarAceptacion(id);
+       }
+   }
+   
    private int crearEstado(boolean aceptacion) {
       return this.automata.addNodo(aceptacion);
    }
